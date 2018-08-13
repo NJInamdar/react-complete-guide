@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import './App.css';
-import Person from './Person/Person';
+import classes from './App.css'; //modular css imported using webpack config changes
+
+import Persons from '../components/Persons/Persons'
 
 
 class App extends Component {
@@ -62,44 +63,31 @@ class App extends Component {
     //these arrow functions used in button onclick returns an anonymous FUNCTION which IN result executes switchnamehandler FUNCTION
     //it is recommended to use bind syntax in order to minimize the element changes on react DOM
     render() {
-        const style = {
-            backgroundColor: 'green',
-            color: 'white',
-            font: 'inherit',
-            border: '1px solid blue',
-            padding: '8px',
-            cursor: 'pointer'
-        };
         let persons = null;
+        let btnClass = '';
         if (this.state.showPersons) {
             persons = (<div>
-                {this.state.persons.map((person, index) => {
-                    return <Person
-                        name={person.name}
-                        click={() => this.deletePersonHandler(index)}
-                        age={person.age}
-                        key={person.id}
-                        changed={(event) => this.nameChangedHandler(event, person.id)}
-                    />;
-                })}
+                <Persons persons={this.state.persons}
+                clicked={this.deletePersonHandler}
+                changed={this.nameChangedHandler}/>
             </div>);
-            style.backgroundColor = 'red';
+            btnClass=classes.Red;
         }
-        const classes = [];
+        const assignedClasses = [];
 
         if (this.state.persons.length <= 2) {
-            classes.push('red');
+            assignedClasses.push(classes.red);
         }
         if (this.state.persons.length <= 1) {
-            classes.push('bold');
+            assignedClasses.push(classes.bold);
         }
         //style attribute of button replaces the style provided in the value
         return (
-                <div className="App">
+                <div className={classes.App}>
                     <h1>Hi, I am a react app.</h1>
-                    <p className={classes.join(' carry ')}>This is working</p>
+                    <p className={assignedClasses.join(' ')}>This is working</p>
                     <button
-                        style={style}
+                        className={btnClass}
                         onClick={this.togglePersonsHandler}>
                         Toggle Persons
                     </button>
